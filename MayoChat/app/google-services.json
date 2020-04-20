@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "600066907219",
+    "firebase_url": "https://mayochat-1106e.firebaseio.com",
+    "project_id": "mayochat-1106e",
+    "storage_bucket": "mayochat-1106e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:600066907219:android:928ee09d225486651d3aa6",
+        "android_client_info": {
+          "package_name": "com.sea.mayochat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "600066907219-0p1dipui1ciuqgfp45p5secb7so9a5k9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcNiN18u_LB8DJZtuklfCUWY9CPf97dPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "600066907219-0p1dipui1ciuqgfp45p5secb7so9a5k9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
