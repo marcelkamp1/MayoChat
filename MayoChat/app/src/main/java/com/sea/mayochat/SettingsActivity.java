@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -49,6 +50,8 @@ public class SettingsActivity extends AppCompatActivity
     private ProgressDialog loadingBar;
 
     private Toolbar SettingsToolBar;
+
+    private String photoUrl = "";
 
 
     @Override
@@ -145,6 +148,40 @@ public class SettingsActivity extends AppCompatActivity
 
                 StorageReference filePath = UserProfileImagesRef.child(currentUserID + ".jpg");
 
+                filePath.putFile(resultUri)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                final Task<Uri> firebaseUri = taskSnapshot.getStorage().getDownloadUrl();
+                                firebaseUri.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        final String downloadUrl = uri.toString();
+                                        // Bugfix:
+                                        photoUrl = downloadUrl;
+
+                                        RootRef.child("users").child(currentUserID).child("image")
+                                                .setValue(downloadUrl)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            Toast.makeText(SettingsActivity.this, "Image saved in database", Toast.LENGTH_SHORT).show();
+                                                            loadingBar.dismiss();
+                                                        } else {
+                                                            String message = task.getException().toString();
+                                                            Toast.makeText(SettingsActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
+                                                            loadingBar.dismiss();
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                });
+                            }
+                        });
+/*
+*** alte Version aus dem Tutorial, funktioniert nicht ***
+
                 filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task)
@@ -174,6 +211,8 @@ public class SettingsActivity extends AppCompatActivity
                                             }
                                         }
                                     });
+
+
                         }
                         else
                         {
@@ -183,6 +222,7 @@ public class SettingsActivity extends AppCompatActivity
                         }
                     }
                 });
+ */
             }
         }
     }
